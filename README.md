@@ -20,6 +20,19 @@ To read about the inference in the RBM, I recommend:
   * Chapter 20 on Deep generative models of __Deep learning__ by Goodfellow, Bengio and Courville
   * Section 28.2 on Deep generative models of __Machine learning, a probabilistic perspective__ by Kevin Murphy
 
+# Training the RBM with contrastive Divergence
+Another way to read the equation for the RBM is an energy model with a partition function. So with `E(v,h)` the energy of the current assignment and `Z` as the partition function. Using the framework of Maximum Likelihood Estimation, training an RBM is like walking over the weight surface and trying to find the _best_ peak. In order to do so, we follow the gradient:
+
+![gradient](https://latex.codecogs.com/gif.latex?\nabla_\theta&space;log&space;\&space;p(x;\theta)&space;=&space;\nabla_\theta&space;log&space;\&space;\tilde{p}(x;\theta))&space;-&space;\nabla_\theta&space;log&space;\&space;Z(\theta))
+
+Following the math in [chapter 18 of the Deep Learning book](http://www.deeplearningbook.org/contents/partition.html) we rewrite this gradient to:
+
+![gradient rewritten](https://latex.codecogs.com/gif.latex?\nabla_\theta&space;log&space;\&space;p(x;\theta)&space;=&space;\bold{E}_{x&space;\sim&space;data}&space;\nabla_\theta&space;log&space;\&space;\tilde{p}(x)&space;-&space;\bold{E}_{x&space;\sim&space;p(x)}&space;\nabla_\theta&space;log&space;\&space;\tilde{p}(x))
+
+The left part of the gradient is named the _positive phase_ and the right part is named the _negative phase_. This has an intuitive interpretation. In the _positive phase_ we sample from the data. So we increase the probability of these samples. In the _negative phase_ we sample from the model. The left part has a negative sign. So we decrease the probability of these samples. Here is the image from [the Deep Learning book](http://www.deeplearningbook.org/contents/partition.html)] to visualize this:
+
+![pos_neg_phase](https://github.com/RobRomijnders/rbm/blob/master/im/pos_neg_phase.png?raw=true)
+
 # Data
 The code works with the Google quick draw dataset. [Here](https://console.cloud.google.com/storage/browser/quickdraw_dataset/full/numpy_bitmap/?pli=1) you can download the numpy bitmaps
 
